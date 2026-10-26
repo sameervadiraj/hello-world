@@ -1,0 +1,389 @@
+```mermaid
+flowchart TB
+
+%% ==========================
+%% USER EXPERIENCE
+%% ==========================
+
+subgraph UX["User Experience Layer"]
+    CFO["CFO Portal"]
+    Teams["Teams Copilot"]
+    Excel["Excel Add-in"]
+    PBI["Power BI"]
+    Portal["Finance Workbench"]
+end
+
+%% ==========================
+%% ORCHESTRATION
+%% ==========================
+
+subgraph ORCH["AI Agent Orchestration Layer"]
+
+    Gateway["API Gateway"]
+
+    Router["Agent Router & Planner
+    Intent Detection
+    Task Decomposition
+    Workflow Management"]
+
+    Tools["Tool Orchestration
+    Function Calling
+    Tool Registry
+    Workflow Engine"]
+
+    Guardrails["Governance & Guardrails
+    Access Policies
+    PII Protection
+    Compliance"]
+
+    MemoryOrch["Memory Orchestrator
+    Context Assembly
+    Context Ranking
+    Compression"]
+
+end
+
+CFO --> Gateway
+Teams --> Gateway
+Excel --> Gateway
+PBI --> Gateway
+Portal --> Gateway
+
+Gateway --> Router
+Router --> Tools
+Router --> MemoryOrch
+Router --> Guardrails
+
+%% ==========================
+%% AGENT LAYER
+%% ==========================
+
+subgraph AGENTS["Finance Multi-Agent Layer"]
+
+    CFOAgent["CFO Agent"]
+
+    FPAAgent["FP&A Agent"]
+
+    ReportingAgent["Financial Reporting Agent"]
+
+    TreasuryAgent["Treasury Agent"]
+
+    AccountingAgent["Accounting Policy Agent"]
+
+    RiskAgent["Risk Agent"]
+
+    KnowledgeAgent["Knowledge & Reasoning Agent
+    Entity Resolution
+    Financial Reasoning
+    Graph Traversal"]
+
+end
+
+Router --> CFOAgent
+Router --> FPAAgent
+Router --> ReportingAgent
+Router --> TreasuryAgent
+Router --> AccountingAgent
+Router --> RiskAgent
+
+CFOAgent --> KnowledgeAgent
+FPAAgent --> KnowledgeAgent
+ReportingAgent --> KnowledgeAgent
+TreasuryAgent --> KnowledgeAgent
+AccountingAgent --> KnowledgeAgent
+RiskAgent --> KnowledgeAgent
+
+%% ==========================
+%% MEMORY
+%% ==========================
+
+subgraph MEMORY["Memory Architecture"]
+
+    STM["Short-Term Memory
+    Redis
+
+    Session Context
+    Active Report
+    Current Conversation"]
+
+    EM["Episodic Memory
+    CosmosDB/Postgres
+
+    Historical Tasks
+    Decisions
+    Investigation Trails"]
+
+    LTM["Long-Term Memory
+    CosmosDB
+
+    User Preferences
+    KPI Interests
+    Business Context"]
+
+end
+
+MemoryOrch --> STM
+MemoryOrch --> EM
+MemoryOrch --> LTM
+
+STM --> KnowledgeAgent
+EM --> KnowledgeAgent
+LTM --> KnowledgeAgent
+
+%% ==========================
+%% SEMANTIC LAYER
+%% ==========================
+
+subgraph SEMANTIC["Corporate Finance Semantic Layer"]
+
+    KPIs["Finance KPI Catalog
+
+    Revenue
+    EBITDA
+    Operating Income
+    Cash Flow
+    ROIC
+    EPS"]
+
+    Rules["Business Logic Repository
+
+    Consolidation Rules
+    Allocation Logic
+    EBITDA Formula
+    Forecast Logic"]
+
+    Metrics["Metrics Governance
+
+    Ownership
+    Lineage
+    Certification
+    Version Control"]
+
+end
+
+KnowledgeAgent --> KPIs
+KnowledgeAgent --> Rules
+KnowledgeAgent --> Metrics
+
+%% ==========================
+%% KNOWLEDGE GRAPH
+%% ==========================
+
+subgraph KG["Finance Knowledge Graph"]
+
+    Company["Company"]
+    BU["Business Unit"]
+    CostCenter["Cost Center"]
+    Account["GL Account"]
+
+    Customer["Customer"]
+    Product["Product"]
+    Revenue["Revenue"]
+
+    Contract["Contract"]
+    Vendor["Vendor"]
+    Invoice["Invoice"]
+
+    Budget["Budget"]
+    Forecast["Forecast"]
+    Actuals["Actuals"]
+
+    Treasury["Treasury"]
+    Cash["Cash Position"]
+    FX["FX Exposure"]
+
+    Company --> BU
+    BU --> CostCenter
+    CostCenter --> Account
+
+    Customer --> Product
+    Product --> Revenue
+    Customer --> Contract
+
+    Vendor --> Invoice
+
+    Budget --> Forecast
+    Forecast --> Actuals
+
+    Treasury --> Cash
+    Cash --> FX
+
+end
+
+KnowledgeAgent --> KG
+
+%% ==========================
+%% RAG RETRIEVAL
+%% ==========================
+
+subgraph RETRIEVAL["Composite Retrieval Layer"]
+
+    GraphRAG["Graph RAG"]
+
+    SemanticRAG["Semantic RAG"]
+
+    VectorRAG["Vector Search RAG"]
+
+    SQLRAG["SQL Retrieval"]
+
+    MemoryRAG["Memory Retrieval"]
+
+    Ranker["Hybrid Ranking Engine"]
+
+end
+
+KG --> GraphRAG
+KPIs --> SemanticRAG
+Rules --> SemanticRAG
+STM --> MemoryRAG
+EM --> MemoryRAG
+LTM --> MemoryRAG
+
+GraphRAG --> Ranker
+SemanticRAG --> Ranker
+VectorRAG --> Ranker
+SQLRAG --> Ranker
+MemoryRAG --> Ranker
+
+Ranker --> KnowledgeAgent
+
+%% ==========================
+%% DATA FOUNDATION
+%% ==========================
+
+subgraph DATA["Enterprise Data Foundation"]
+
+    ERP["ERP Systems
+    SAP
+    Oracle
+    Dynamics
+    NetSuite"]
+
+    Finance["Finance Systems
+    GL
+    AP
+    AR
+    Tax
+    Treasury"]
+
+    Planning["Planning Systems
+    Anaplan
+    Hyperion
+    TM1"]
+
+    Business["Business Systems
+    CRM
+    HR
+    Procurement
+    Billing"]
+
+    Lakehouse["Finance Lakehouse
+    OneLake / Fabric / Databricks"]
+
+    Warehouse["Curated Finance Models
+    Gold Layer"]
+
+end
+
+ERP --> Lakehouse
+Finance --> Lakehouse
+Planning --> Lakehouse
+Business --> Lakehouse
+
+Lakehouse --> Warehouse
+
+Warehouse --> SQLRAG
+Warehouse --> KPIs
+Warehouse --> KG
+
+%% ==========================
+%% LLM LAYER
+%% ==========================
+
+subgraph LLM["Foundation Models"]
+
+    GPT["GPT Model
+    Financial Reasoning
+    Summarization
+    Narrative Generation"]
+
+end
+
+KnowledgeAgent --> GPT
+
+%% ==========================
+%% COST MANAGEMENT
+%% ==========================
+
+subgraph COST["AI FinOps & Token Cost Layer"]
+
+    Meter["Token Metering Service
+
+    Input Tokens
+    Output Tokens
+    Cache Tokens
+    Tool Calls"]
+
+    Calc["Cost Calculator
+
+    Model Cost
+    Retrieval Cost
+    Graph Query Cost
+    Hosting Cost"]
+
+    Usage["Fact_AI_Usage"]
+
+    Dashboard["Power BI FinOps Dashboard
+
+    Cost by User
+    Cost by Agent
+    Cost by BU
+    Cost by Model"]
+
+end
+
+GPT --> Meter
+Meter --> Calc
+Calc --> Usage
+Usage --> Dashboard
+
+%% ==========================
+%% OBSERVABILITY
+%% ==========================
+
+subgraph OBS["Observability & Monitoring"]
+
+    OTel["OpenTelemetry"]
+
+    Monitor["Azure Monitor
+    LangSmith
+    AI Foundry"]
+
+    MetricsObs["Metrics
+
+    Accuracy
+    Latency
+    Hallucinations
+    Retrieval Quality
+    Token Usage"]
+
+end
+
+GPT --> OTel
+KnowledgeAgent --> OTel
+Router --> OTel
+
+OTel --> Monitor
+Monitor --> MetricsObs
+
+%% ==========================
+%% RESPONSE FLOW
+%% ==========================
+
+GPT --> Gateway
+Gateway --> CFO
+Gateway --> Teams
+Gateway --> Excel
+Gateway --> PBI
+Gateway --> Portal
+```
